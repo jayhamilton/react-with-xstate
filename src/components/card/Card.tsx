@@ -4,7 +4,7 @@ export interface CardProperties{
     version: string;
 }
 
-function Card (props: CardProperties){
+function Card (){
 
     return(
 
