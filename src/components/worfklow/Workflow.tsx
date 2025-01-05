@@ -2,6 +2,8 @@
 import { myMachine } from '../machine/m.tsx';
 import { useMachine } from '@xstate/react';
 import styles from './Workflow.module.css';
+import stateDiagram from '../../assets/state-diagram.png'; // Import the image
+
 
 function Workflow() {
 
@@ -10,8 +12,9 @@ function Workflow() {
     return (
 
         <div className = {styles.center}>
+            
 
-            <h1>Workflow</h1>
+            <h1>Workflow Example</h1>
             
             <h3>State: {state.value.toString()}</h3>
             <br></br>
@@ -25,6 +28,9 @@ function Workflow() {
             &nbsp;
             {state.value == 'rejected' && <button onClick={() => { send({ type: 'RESUBMIT' })}}> RE-SUBMIT</button>}
 
+        
+            <img src={stateDiagram}  alt="Workflow" />
+        
         </div>
 
 
