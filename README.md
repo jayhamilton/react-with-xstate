@@ -1,50 +1,48 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + XState
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This template provides a minimal setup to get React working in Vite with HMR, some ESLint rules, and state management using XState.
 
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Using XState with React
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This project includes an example of using XState for state management in a React application. XState is a library for creating, interpreting, and executing finite state machines and statecharts, which can be used to manage complex state logic in your application.
 
-- Configure the top-level `parserOptions` property like this:
+### Example Workflow Component
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+The `Workflow` component demonstrates how to use XState with React. It includes a state machine that manages different states such as `draft`, `inreview`, `published`, and `rejected`.
+
+```tsx
+import { useMachine } from '@xstate/react';
+import styles from './Workflow.module.css';
+import stateDiagram from '../../assets/state-diagram.png'; // Import the image
+
+function Workflow() {
+   const [state, send] = useMachine(myMachine);
+
+   const renderButton = (condition: boolean, actionType: string, label: string) => {
+        return condition && <button onClick={() => send({ type: actionType })}>{label}</button>;
+    };
+
+    return (
+        <div className={styles.center}>
+            <h1>Workflow Example</h1>
+            <h3>State: {state.value.toString()}</h3>
+            <br />
+            {renderButton(state.value === 'draft', 'SUBMITFORREVIEW', 'SUBMIT FOR REVIEW')}
+            {renderButton(state.value === 'published', 'UNPUBLISH', 'UNPUBLISH')}
+            {renderButton(state.value === 'inreview', 'PUBLISH', 'PUBLISH')}&nbsp;
+            {renderButton(state.value === 'inreview', 'REJECT', 'REJECT')}
+            {renderButton(state.value === 'rejected', 'RESUBMIT', 'RE-SUBMIT')}
+            <br/>
+            <img src={stateDiagram} alt="Workflow" />
+        </div>
+    );
+}
+
+export default Workflow;
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
