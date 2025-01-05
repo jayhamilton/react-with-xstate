@@ -1,6 +1,7 @@
 
 import { myMachine } from '../machine/m.tsx';
 import { useMachine } from '@xstate/react';
+import styles from './Workflow.module.css';
 
 function Workflow() {
 
@@ -8,7 +9,7 @@ function Workflow() {
 
     return (
 
-        <div className='centered'>
+        <div className = {styles.center}>
 
             <h1>Workflow</h1>
             
