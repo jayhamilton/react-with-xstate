@@ -2,14 +2,16 @@
 import { myMachine } from '../machine/m.tsx';
 import { useMachine } from '@xstate/react';
 
-function ToDoApp() {
+function Workflow() {
 
     const [state, send] = useMachine(myMachine);
 
     return (
 
-        <div>
+        <div className='centered'>
 
+            <h1>Workflow</h1>
+            
             <h3>State: {state.value.toString()}</h3>
             <br></br>
             {state.value == 'draft' && <button onClick={() => { send({ type: 'SUBMITFORREVIEW' })}}> SUBMIT FOR REVIEW</button>}
@@ -29,4 +31,4 @@ function ToDoApp() {
 
 }
 
-export default ToDoApp;
+export default Workflow;
